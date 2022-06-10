@@ -5,7 +5,7 @@ import axios from 'axios'
 import {showFullScreenLoading, tryHideFullScreenLoading} from './serviceLoading'
 import { checkStatus } from './checkStatus'
 
-const baseURL = "https://55e88de2-49c8-4feb-a29a-8ff8ee713422.mock.pstmn.io"
+const baseURL = "https://8e8dacb7-cfc7-4e58-baf3-67ba46e3d77a.mock.pstmn.io"
 
 const ResultEnum = {
 	SUCCESS:  200,
@@ -24,7 +24,7 @@ const config = {
 	// withCredentials: true
 }
 
-console.log('config',config);
+// console.log('config',config);
 
 const token = 'test token'
 

@@ -1,5 +1,7 @@
 <template>
+<SwitchDark />
     <div class="login-container">
+        
         <div class="login-content">
             <div class="login-left">
                 <h1 class="login-title">Welcome</h1>
@@ -12,20 +14,69 @@
                 
             </div>
             <div class="login-right">
-                <img src="../../assets/logo.svg" alt="">
+                <img src="../../assets/logo.svg" alt="" style="margin-bottom: 30px">
+                <el-form
+                    ref="loginFormRef"
+                    :model="loginForm"
+                    :rules="loginRules"
+                    label-position="left"
+                    status-icon
+                    label-width="80px"
+                    size="large"
+                >
+                    <el-form-item label="Email" prop="email" class="login-form-item">
+                        <el-input type="text" v-model="loginForm.email" placeholder="admin/users" />
+                    </el-form-item>
+                    <el-form-item label="Password" prop="password" class="login-form-item">
+                        <el-input type="password" v-model="loginForm.password" placeholder="12345678" />
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="handleLogin(loginFormRef)">Login</el-button>
+                    </el-form-item>
+                </el-form>
             </div>
         </div>
     </div>
 </template>
 
 <script setup name="Login">
+import { reactive, ref } from 'vue'
+import SwitchDark from '../../components/SwitchDark/index.vue'
+import http from '../../utils/http';
+
+const loginFormRef = ref()
+
+const loginForm = reactive({
+    email: '',
+    password: ''
+})
+
+const loginRules = reactive({
+    email: [
+        {required: true, message: 'Please Enter Your Email', trigger: 'blur'}
+    ],
+    password: [
+        {required: true, message: 'Please Enter Your Password', trigger: 'blur'},
+        // {min: 6, max: 16, message: 'Length should be 3 to 5', trigger: 'blur'}
+    ]
+});
+
+const handleLogin = (loginRef)=>{
+    if(!loginRef) return
+    // console.log(login);
+    loginRef.validate((valid)=>{
+        http.post('/user/login', loginForm).then((res)=>{
+            console.log(res);
+        })
+    })
+}
 
 </script>
 
 <style lang="scss">
 .login-container{
     width: 100%;
-    height: 100vh;
+    height: calc(100vh - 32px);
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -68,6 +119,10 @@
         .login-right{
             width: 50%;
             padding: 10px 20px 0 20px;
+
+            .login-form-item{
+                margin-bottom: 40px;
+            }
         }
     }
 }
