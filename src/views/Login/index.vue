@@ -43,6 +43,13 @@
 import { reactive, ref } from 'vue'
 import SwitchDark from '../../components/SwitchDark/index.vue'
 import http from '../../utils/http';
+import md5 from 'js-md5'
+import { useGlobalStore } from '../../store';
+import { ElMessage } from 'element-plus';
+import { useRouter } from 'vue-router';
+
+const globalStore = useGlobalStore()
+const router = useRouter()
 
 const loginFormRef = ref()
 
@@ -65,9 +72,20 @@ const handleLogin = (loginRef)=>{
     if(!loginRef) return
     // console.log(login);
     loginRef.validate((valid)=>{
-        http.post('/user/login', loginForm).then((res)=>{
-            console.log(res);
-        })
+        if(valid){
+            const loginData = {
+                email: loginForm.email,
+                password: md5(loginForm.password)
+            }
+            http.post('/user/login', loginData).then((res)=>{
+                console.log(res);
+                globalStore.setToken(res.data.token)
+                globalStore.setUserInfo(res.data)
+                ElMessage.success("登录成功！");
+                router.push('/home/index')
+            })
+        }
+        
     })
 }
 

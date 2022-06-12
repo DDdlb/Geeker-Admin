@@ -4,8 +4,9 @@ import piniaPersist from "pinia-plugin-persist";
 /**
  *  pinia 全局状态管理
  */
-
-export const useGlobalStore = defineStore('GlobalState', {
+console.log("bbbbb");
+export const useGlobalStore = defineStore({
+    id: 'GlobalState',
     state: ()=>({
         // token
         token: "asdasdads",

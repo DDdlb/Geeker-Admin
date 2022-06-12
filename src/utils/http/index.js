@@ -4,8 +4,10 @@
 import axios from 'axios'
 import {showFullScreenLoading, tryHideFullScreenLoading} from './serviceLoading'
 import { checkStatus } from './checkStatus'
-
-const baseURL = "https://8e8dacb7-cfc7-4e58-baf3-67ba46e3d77a.mock.pstmn.io"
+import { useGlobalStore } from '../../store/index.js'
+import { ElMessage } from 'element-plus'
+// ApiPost Mock
+const baseURL = "https://console-mock.apipost.cn/app/mock/project/2cf1c082-fa3e-48f2-8baa-3cfa5b5c1182"
 
 const ResultEnum = {
 	SUCCESS:  200,
@@ -15,6 +17,8 @@ const ResultEnum = {
 	TYPE: "success"
 }
 
+// const globalStore = useGlobalStore()
+console.log("aaaaaa");
 const config = {
     // 默认地址
     baseURL: baseURL,
@@ -32,13 +36,16 @@ class RequestHttp{
     constructor(config){
         // 初始化实例
         this.service = axios.create(config)
+        // 全局变量
+        // const globalStore = useGlobalStore()
         /**
          * @description 请求拦截器
          * 展示加载组件，添加token认证
          */
         this.service.interceptors.request.use((config)=>{
+            const globalStore = useGlobalStore()
             showFullScreenLoading();
-            return {...config, headers: {Authorization: 'Bearer ' + token}}
+            return {...config, headers: {Authorization: 'Bearer ' + globalStore.token}}
         },
         (error)=>{
             return Promise.reject(error)
@@ -53,11 +60,12 @@ class RequestHttp{
             tryHideFullScreenLoading()
             // * 登陆失效（code == 599）
 			if (data.code == ResultEnum.OVERDUE) {
+                const globalStore = useGlobalStore()
 				ElMessage.error(data.msg);
 				globalStore.setToken("");
-				router.replace({
-					path: "/login"
-				});
+				// router.replace({
+				// 	path: "/login"
+				// });
 				return Promise.reject(data);
 			}
 
