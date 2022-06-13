@@ -14,7 +14,7 @@ import router from './router'
 import pinia from "./store/index";
 
 import './styles/element-dark.scss'
-console.log("ccccc");
+
 const app = createApp(App)
 
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
