@@ -1,5 +1,5 @@
 import {  defineStore, createPinia } from 'pinia'
-import piniaPersistConfig from './persistConfig/globalState'
+import piniaPersistConfig from './persistConfig/piniaPersistConfig'
 import piniaPersist from "pinia-plugin-persist";
 /**
  *  pinia 全局状态管理

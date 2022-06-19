@@ -1,6 +1,8 @@
 <template>
     <div class="layout-container">
-        <div class="layout-aside"></div>
+        <div class="layout-aside" :style="{width: menuStore.isCollapse?'50px':'200px'}">
+            <Menu />
+        </div>
         <div class="layout-right">
             <div class="layout-header">
                 <Header></Header>
@@ -18,6 +20,10 @@
 
 <script setup name="Layout">
 import Header from './header/index.vue';
+import Menu from './menu/index.vue'
+import { useMenuStore } from '../../store/modules/usMenuStore';
+
+const menuStore = useMenuStore()
 
 </script>
 
@@ -29,8 +35,9 @@ import Header from './header/index.vue';
     background-color: #dddee0;
 
     .layout-aside{
-        width: 100px;
+        width: 200px;
         background-color: #191a20;
+        transition: all 0.3s ease;
     }
 
     .layout-right{

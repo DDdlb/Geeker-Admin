@@ -1,8 +1,9 @@
 <template>
     <div class="header-container">
         <div class="left">
-            <el-icon size="28px"><Fold /></el-icon>
-            <p>首页</p>
+            <el-icon size="28px" style="cursor: pointer;" @click="handleCollapse">
+                <component :is="menuStore.isCollapse?'Expand':'Fold'"></component>
+            </el-icon>
             <BreadCrumb />
         </div>
         <div class="right">
@@ -13,6 +14,13 @@
 
 <script setup name="Header">
 import BreadCrumb from './components/BreadCrumb.vue';
+import { useMenuStore } from '../../../store/modules/usMenuStore';
+
+const menuStore = useMenuStore()
+
+const handleCollapse = ()=>{
+    menuStore.setCollapse()
+}
 
 </script>
 

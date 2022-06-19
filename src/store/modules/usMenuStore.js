@@ -1,0 +1,18 @@
+import { defineStore } from "pinia";
+import piniaPersistConfig from '../persistConfig/piniaPersistConfig'
+
+// menu Store
+export const useMenuStore = defineStore({
+    id: "MenuState",
+    state: ()=>({
+        // menu collapse
+        isCollapse: false
+    }),
+    getters: {},
+    actions: {
+        setCollapse(){
+            this.isCollapse = !this.isCollapse
+        }
+    },
+    persist: piniaPersistConfig("MenuState")
+})
