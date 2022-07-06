@@ -3,13 +3,36 @@
         <img src="@/assets/logo.png" alt="" @click="jumpHome">
         <h1 v-show="!menuStore.isCollapse">Geeker Admin</h1>
     </div>
+    <el-scrollbar>
+        <el-menu>
+            <SubItem :menuList="menuList"></SubItem>
+        </el-menu>
+        
+    </el-scrollbar>
+    
 </template>
 
 <script setup name="menu">
+import { ref } from '@vue/reactivity';
+import { onMounted } from '@vue/runtime-core';
 import { useRouter } from 'vue-router';
+import { useGlobalStore } from '../../../store';
 import { useMenuStore } from '../../../store/modules/usMenuStore';
+import { getMenuList } from '../../../utils/api';
+import SubItem from './SubItem.vue';
 const router = useRouter()
 const menuStore = useMenuStore()
+const globalStore = useGlobalStore()
+const menuList = ref([])
+
+onMounted( async ()=>{
+    console.log('mounted');
+    const isAdmin = globalStore.userInfo.isAdmin
+    const res = await getMenuList(isAdmin)
+    console.log(res);
+    menuList.value = res.data
+})
+
 
 const jumpHome = ()=>{
     router.push('/home/index')

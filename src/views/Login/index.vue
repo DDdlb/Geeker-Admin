@@ -31,7 +31,7 @@
                         <el-input type="password" v-model="loginForm.password" placeholder="12345678" />
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="handleLogin(loginFormRef)">Login</el-button>
+                        <el-button type="primary" @click="handleLogin(loginFormRef)" :loading="loading">Login</el-button>
                     </el-form-item>
                 </el-form>
             </div>
@@ -47,17 +47,24 @@ import md5 from 'js-md5'
 import { useGlobalStore } from '../../store';
 import { ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
+import { loginApi } from '../../utils/api/index';
 
+// init 
 const globalStore = useGlobalStore()
 const router = useRouter()
 
+// form ref
 const loginFormRef = ref()
 
+const loading = ref(false)
+
+// login data
 const loginForm = reactive({
     email: '',
     password: ''
 })
 
+// form rules
 const loginRules = reactive({
     email: [
         {required: true, message: 'Please Enter Your Email', trigger: 'blur'}
@@ -68,22 +75,37 @@ const loginRules = reactive({
     ]
 });
 
+// login
 const handleLogin = (loginRef)=>{
     if(!loginRef) return
     // console.log(login);
-    loginRef.validate((valid)=>{
+    loginRef.validate(async (valid)=>{
         if(valid){
+            loading.value = true
+            // md5加密密码
             const loginData = {
                 email: loginForm.email,
                 password: md5(loginForm.password)
             }
-            http.post('/user/login', loginData).then((res)=>{
-                console.log(res);
+            try{
+                const res = await loginApi(loginData)
+                console.log('login res',res);
                 globalStore.setToken(res.data.token)
                 globalStore.setUserInfo(res.data)
                 ElMessage.success("登录成功！");
                 router.push('/home/index')
-            })
+            } finally {
+                loading.value = false
+            }
+            
+            
+            // http.post('/user/login', loginData).then((res)=>{
+            //     console.log(res);
+            //     globalStore.setToken(res.data.token)
+            //     globalStore.setUserInfo(res.data)
+            //     ElMessage.success("登录成功！");
+            //     router.push('/home/index')
+            // })
         }
         
     })

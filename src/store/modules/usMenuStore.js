@@ -6,12 +6,17 @@ export const useMenuStore = defineStore({
     id: "MenuState",
     state: ()=>({
         // menu collapse
-        isCollapse: false
+        isCollapse: false,
+        // menu List
+        menuList: []
     }),
     getters: {},
     actions: {
         setCollapse(){
             this.isCollapse = !this.isCollapse
+        },
+        setMenuList(menuList){
+            this.menuList = menuList
         }
     },
     persist: piniaPersistConfig("MenuState")
