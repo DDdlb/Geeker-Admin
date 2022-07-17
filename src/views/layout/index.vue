@@ -7,7 +7,9 @@
             <div class="layout-header">
                 <Header></Header>
             </div>
-            <div class="layout-tabs"></div>
+            <div class="layout-tabs">
+                <Tabs></Tabs>
+            </div>
             <div class="layout-main">
                 <router-view></router-view>
             </div>
@@ -21,6 +23,7 @@
 <script setup name="Layout">
 import Header from './header/index.vue';
 import Menu from './menu/index.vue'
+import Tabs from './tabs/index.vue'
 import { useMenuStore } from '../../store/modules/usMenuStore';
 
 const menuStore = useMenuStore()

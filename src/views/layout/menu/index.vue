@@ -4,7 +4,14 @@
         <h1 v-show="!menuStore.isCollapse">Geeker Admin</h1>
     </div>
     <el-scrollbar>
-        <el-menu>
+        <el-menu
+          background-color="#191a20"
+          text-color="#bdbdc0"
+          active-text-color="#fff"
+          :unique-opened="true"
+          :router="true"
+          class="slide-menu"
+        >
             <SubItem :menuList="menuList"></SubItem>
         </el-menu>
         
@@ -59,6 +66,12 @@ const jumpHome = ()=>{
         font-weight: bolder;
         height: 30px;
         line-height: 30px;
+    }
+}
+.slide-menu{
+    a{
+        color: #bdbdc0;
+        text-decoration: none;
     }
 }
 </style>
